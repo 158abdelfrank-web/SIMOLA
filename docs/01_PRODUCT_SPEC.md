@@ -160,3 +160,32 @@ Un único escenario acoplado de **5 etapas catalíticas secuenciales** con conse
 - **Etapa 3 — Transesterificación en E2 (Dihidrolipoil Transacetilasa, EC 2.3.1.12):** El grupo tiol libre ($-\text{SH}$) de la **Coenzima A ($\text{CoA-SH}$)** ataca el carbono carbonílico de la acetil-dihidrolipoamida, liberando **$\text{Acetil-CoA}$** (segundo gran producto final reservado, con enlace tioéster de alta energía) y dejando el brazo prostético como **dihidrolipoamida reducida ($-\text{SH} / -\text{SH}$)**.
 - **Etapa 4 — Reoxidación del Puente Disulfuro en E3 (Dihidrolipoil Deshidrogenasa, EC 1.8.1.4):** La enzima E3 oxida los dos grupos tiol de la dihidrolipoamida de vuelta a su forma activa oxidada (disulfuro cíclico), transfiriendo los dos átomos de hidrógeno a su cofactor prostético flavínico para formar **$\text{FADH}_2$**.
 - **Etapa 5 — Transferencia Electrónica Final a $\text{NAD}^+$ (E3):** El $\text{FADH}_2$ unido a E3 transfiere un ion hidruro ($:\text{H}^-$) al cofactor móvil **$\text{NAD}^+$** y libera un protón al medio, generando **$\text{NADH} + \text{H}^+$** (tercer producto final reservado) y dejando al complejo multienzimático regenerado para un nuevo ciclo catalítico.
+- para el problema del paso 3 (modulo 2): winConditions: {
+      acceptedSmiles: [
+        // 1. Estructura exacta dibujada en el lienzo con plantilla de furanosa (C6H10O12P2 desprotonada y C6H14O12P2 protonada)
+        'O=P([O-])([O-])OCC1OC(COP(=O)([O-])[O-])C(O)C1O',
+        'O=P(O)(O)OCC1OC(COP(=O)(O)O)C(O)C1O',
+        
+        // 2. Fructosa-1,6-bisfosfato furanósica canónica completa con -OH hemicetálico en C2 (desprotonada y protonada)
+        'O=P([O-])([O-])OCC1OC(O)(COP(=O)([O-])[O-])C(O)C1O',
+        'O=P(O)(O)OCC1OC(O)(COP(=O)(O)O)C(O)C1O',
+
+        // 3. Forma abierta lineal cetosa (desprotonada y protonada)
+        'O=P([O-])([O-])OCC(=O)C(O)C(O)C(O)COP(=O)([O-])[O-]',
+        'O=P(O)(O)OCC(=O)C(O)C(O)C(O)COP(=O)(O)O',
+
+        // 4. SMILES originales por retrocompatibilidad
+        'O=P(O)(O)OCC1(COP(=O)(O)O)OC(O)C(O)C1O',
+        'O=P([O-])([O-])OCC1(COP(=O)([O-])[O-])OC(O)C(O)C1O',
+      ],
+      requiredSubstructures: [
+        {
+          name: 'Dos Grupos Fosfato (C1 y C6)',
+          smarts: '[#6][OX2]P(=O)',
+          minCount: 2,
+          description:
+            'La Fructosa-1,6-bisfosfato requiere dos enlaces fosfoéster: uno en C1 y otro en C6.',
+        },
+      ],
+      mustBeConnected: true,
+    },
